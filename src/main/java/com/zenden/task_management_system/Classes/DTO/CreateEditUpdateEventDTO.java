@@ -5,13 +5,12 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class ReadEventDTO {
-    private long id;
+public class CreateEditUpdateEventDTO {
+
+    private Long id;
     private String name;
     private String description;
     private Date date;
-    private String location;
-    private CategoryDTO category;
-    private Date createdAt;
-    private Date updatedAt;
+    private Long locationId;
+    private Long categoryId;
 }

@@ -12,12 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Data
-@ToString(exclude={"ticket, location, category"})
 @Entity
 @Table(name = "events")
+@EqualsAndHashCode(callSuper=false)
 public class Event extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,4 +39,7 @@ public class Event extends Auditable {
 
     @OneToMany(mappedBy = "event")
     private List<Ticket> ticket;
+
+
+
 }
