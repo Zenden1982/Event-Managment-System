@@ -1,8 +1,8 @@
 package com.zenden.task_management_system.Classes.DTO;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class ParticipantDTO {
     private Long id;
     private String name;

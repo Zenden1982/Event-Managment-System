@@ -10,7 +10,7 @@ public class ReadEventDTO {
     private String name;
     private String description;
     private Date date;
-    private String location;
+    private LocationDTO location;
     private CategoryDTO category;
     private Date createdAt;
     private Date updatedAt;
