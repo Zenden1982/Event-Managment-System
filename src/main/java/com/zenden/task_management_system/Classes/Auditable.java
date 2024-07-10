@@ -1,11 +1,13 @@
 package com.zenden.task_management_system.Classes;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
@@ -15,9 +17,11 @@ import lombok.Data;
 @Data
 public class Auditable {
     
+    @Column(name = "createdAt")
     @CreatedDate
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
+    @Column(name = "updatedAt")
     @LastModifiedDate
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

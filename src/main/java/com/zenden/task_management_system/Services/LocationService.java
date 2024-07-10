@@ -1,8 +1,11 @@
 package com.zenden.task_management_system.Services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.zenden.task_management_system.Classes.Location;
@@ -22,11 +25,28 @@ public class LocationService {
         return mapper.map(locationRepository.findById(id).get());
     }
 
-    public Page<LocationDTO> getAllLocations(int page, int size) {
-        return locationRepository.findAll(Pageable.ofSize(size).withPage(page)).map(mapper::map);
+    public Page<LocationDTO> getAllLocations(int page, int size, String sortBy) {
+        return locationRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy))).map(mapper::map);
     }
 
     public Location createLocation(LocationDTO location) {
         return locationRepository.save(mapper.map(location));
+    }
+
+    public Location updateLocation(Long id,LocationDTO location) {
+        Optional<Location> location2 = locationRepository.findById(id);
+        if (location2.isPresent()) {
+            location2.get().setName(location.getName());
+            location2.get().setAddress(location.getAddress());
+            location2.get().setCapacity(location.getCapacity());
+            return locationRepository.save(location2.get());
+        }
+        else {
+            throw new RuntimeException("Location not found");
+        }
+    }
+
+    public void deleteLocation(long id) {
+        locationRepository.deleteById(id);
     }
 }

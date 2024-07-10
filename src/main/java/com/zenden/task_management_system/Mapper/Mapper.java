@@ -8,6 +8,7 @@ import com.zenden.task_management_system.Classes.Event;
 import com.zenden.task_management_system.Classes.Location;
 import com.zenden.task_management_system.Classes.Participant;
 import com.zenden.task_management_system.Classes.Ticket;
+import com.zenden.task_management_system.Classes.User;
 import com.zenden.task_management_system.Classes.DTO.CategoryDTO;
 import com.zenden.task_management_system.Classes.DTO.CreateEditUpdateEventDTO;
 import com.zenden.task_management_system.Classes.DTO.CreateEditUpdateTicketDTO;
@@ -15,11 +16,11 @@ import com.zenden.task_management_system.Classes.DTO.LocationDTO;
 import com.zenden.task_management_system.Classes.DTO.ParticipantDTO;
 import com.zenden.task_management_system.Classes.DTO.ReadEventDTO;
 import com.zenden.task_management_system.Classes.DTO.ReadTicketDTO;
+import com.zenden.task_management_system.Classes.DTO.UserDTO;
 import com.zenden.task_management_system.Repositories.CategoryRepository;
 import com.zenden.task_management_system.Repositories.EventRepository;
 import com.zenden.task_management_system.Repositories.LocationRepository;
 import com.zenden.task_management_system.Repositories.ParticipantRepository;
-import com.zenden.task_management_system.Repositories.TicketRepository;
 
 @Component
 public class Mapper {
@@ -29,9 +30,6 @@ public class Mapper {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private TicketRepository ticketRepository;
 
     @Autowired
     private EventRepository eventRepository;
@@ -68,7 +66,6 @@ public class Mapper {
 
     public Event map(CreateEditUpdateEventDTO eventDTO) {
         Event event = new Event();
-        event.setId(eventDTO.getId());
         event.setName(eventDTO.getName());
         event.setDescription(eventDTO.getDescription());
         event.setLocation(locationRepository.findById(eventDTO.getLocationId()).orElseGet(() -> new Location()));
@@ -97,7 +94,6 @@ public class Mapper {
 
     public Participant map(ParticipantDTO participant) {
         Participant participant1 = new Participant();
-        participant1.setId(participant.getId());
         participant1.setName(participant.getName());
         participant1.setEmail(participant.getEmail());
         return participant1;
@@ -113,7 +109,6 @@ public class Mapper {
     
     public Ticket map(CreateEditUpdateTicketDTO ticketDTO) {
         Ticket ticket = new Ticket();
-        ticket.setId(ticketDTO.getId());
         ticket.setParticipant(participantRepository.findById(ticketDTO.getParticipantId()).orElseGet(() -> new Participant()));
         ticket.setEvent(eventRepository.findById(ticketDTO.getEventId()).orElseGet(() -> new Event()));
         return ticket;
@@ -125,5 +120,25 @@ public class Mapper {
         readTicketDTO.setEvent(map(ticket.getEvent()));
         readTicketDTO.setParticipant(map(ticket.getParticipant()));
         return readTicketDTO;
+    }
+
+    public User map(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setRole(userDTO.getRole());
+        return user;
+    }
+
+    public UserDTO map(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setRole(user.getRole());
+        return userDTO;
     }
 }

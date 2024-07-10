@@ -2,9 +2,9 @@ package com.zenden.task_management_system.Classes.DTO;
 
 import com.zenden.task_management_system.Classes.Role;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class UserDTO {
     private long id;
     private String username;
