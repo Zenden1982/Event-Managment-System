@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zenden.task_management_system.Classes.DTO.CreateEditUpdateEventDTO;
 import com.zenden.task_management_system.Classes.DTO.ReadEventDTO;
+import com.zenden.task_management_system.Classes.Filters.Event.EventFilter;
 import com.zenden.task_management_system.Mapper.Mapper;
 import com.zenden.task_management_system.Services.EventService;
 
@@ -36,6 +37,13 @@ public class EventController {
     }
 
     @Transactional
+    @PostMapping("/filter")
+    public ResponseEntity<Page<ReadEventDTO>> findAllByFilter(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy, @RequestBody EventFilter filter) {
+                return ResponseEntity.ok(eventService.getAllEventsByFilter(page, size, sortBy, filter));
+            }
+
+    @Transactional
     @GetMapping("/{id}")
     public ResponseEntity<ReadEventDTO> findById(@PathVariable long id) {
         return ResponseEntity.ok(eventService.getEventById(id));
@@ -43,7 +51,7 @@ public class EventController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<ReadEventDTO> postMethodName(@RequestBody CreateEditUpdateEventDTO event) {
+    public ResponseEntity<ReadEventDTO> addEvent(@RequestBody CreateEditUpdateEventDTO event) {
 
         ReadEventDTO entity = mapper.map(eventService.createEvent(event));
         

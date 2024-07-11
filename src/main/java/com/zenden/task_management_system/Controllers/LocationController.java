@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zenden.task_management_system.Classes.DTO.LocationDTO;
+import com.zenden.task_management_system.Classes.Filters.Location.LocationFilter;
 import com.zenden.task_management_system.Services.LocationService;
 
 
@@ -33,8 +34,16 @@ public class LocationController {
         return ResponseEntity.ok(locationService.findById(id));
     }
     @Transactional
-    @GetMapping()
-    public ResponseEntity<Page<LocationDTO>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
+    @PostMapping("/filter")
+    public ResponseEntity<Page<LocationDTO>> findAllByFilter(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, 
+            @RequestParam(defaultValue = "id") String sortBy, @RequestBody LocationFilter filter) {
+        return ResponseEntity.ok(locationService.getAllLocationsByFilter(page, size, sortBy, filter));
+    }
+
+    @GetMapping
+    @Transactional
+    public ResponseEntity<Page<LocationDTO>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, 
+    @RequestParam(defaultValue = "id") String sortBy) {
         return ResponseEntity.ok(locationService.getAllLocations(page, size, sortBy));
     }
 

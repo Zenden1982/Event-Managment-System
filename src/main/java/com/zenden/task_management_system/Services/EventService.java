@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.zenden.task_management_system.Classes.Event;
 import com.zenden.task_management_system.Classes.DTO.CreateEditUpdateEventDTO;
 import com.zenden.task_management_system.Classes.DTO.ReadEventDTO;
+import com.zenden.task_management_system.Classes.Filters.Event.EventFilter;
+import com.zenden.task_management_system.Classes.Filters.Event.EventSpecifications;
 import com.zenden.task_management_system.Mapper.Mapper;
 import com.zenden.task_management_system.Repositories.CategoryRepository;
 import com.zenden.task_management_system.Repositories.EventRepository;
@@ -38,6 +41,27 @@ public class EventService {
     public Page<ReadEventDTO> getAllEvents(int page, int size, String sortBy) {
         return eventRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy))).map(mapper::map);
     }
+
+    public Page<ReadEventDTO> getAllEventsByFilter(int page, int size, String sortBy, EventFilter eventFilter) {
+        Specification<Event> spec = Specification.where(null);
+        if (eventFilter.getName() != null) {
+            spec = spec.and(EventSpecifications.nameLike(eventFilter.getName()));
+        }
+        if (eventFilter.getDescription() != null) {
+            spec = spec.and(EventSpecifications.descriptionLike(eventFilter.getDescription()));
+        }
+        if (eventFilter.getDate() != null) {
+            spec = spec.and(EventSpecifications.dateAfter(eventFilter.getDate()));
+        }
+        if (eventFilter.getLocationId() != null) {
+            spec = spec.and(EventSpecifications.locationIdEquals(eventFilter.getLocationId()));
+        }
+        if (eventFilter.getCategoryId() != null) {
+            spec = spec.and(EventSpecifications.categoryIdEquals(eventFilter.getCategoryId()));
+        }
+        return eventRepository.findAll(spec, PageRequest.of(page, size, Sort.by(sortBy))).map(mapper::map);
+    }
+       
 
     public Event createEvent(CreateEditUpdateEventDTO eventDTO) {
         return eventRepository.save(mapper.map(eventDTO));

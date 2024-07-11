@@ -1,6 +1,7 @@
 package com.zenden.task_management_system.Mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.zenden.task_management_system.Classes.Category;
@@ -33,6 +34,9 @@ public class Mapper {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ParticipantRepository participantRepository;
@@ -119,6 +123,8 @@ public class Mapper {
         readTicketDTO.setId(ticket.getId());
         readTicketDTO.setEvent(map(ticket.getEvent()));
         readTicketDTO.setParticipant(map(ticket.getParticipant()));
+        readTicketDTO.setCreatedAt(ticket.getCreatedAt());
+        readTicketDTO.setUpdatedAt(ticket.getUpdatedAt());
         return readTicketDTO;
     }
 
@@ -127,8 +133,7 @@ public class Mapper {
         user.setId(userDTO.getId());
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setRole(userDTO.getRole());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return user;
     }
 
@@ -138,7 +143,6 @@ public class Mapper {
         userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
-        userDTO.setRole(user.getRole());
         return userDTO;
     }
 }

@@ -14,6 +14,8 @@ import com.zenden.task_management_system.Repositories.EventRepository;
 import com.zenden.task_management_system.Repositories.ParticipantRepository;
 import com.zenden.task_management_system.Repositories.TicketRepository;
 
+import jakarta.persistence.EntityManager;
+
 @Service
 public class TicketService {
 
@@ -23,6 +25,9 @@ public class TicketService {
     @Autowired
     private Mapper mapper;
 
+    @Autowired
+    private EntityManager entityManager;
+    
     @Autowired
     private EventRepository eventRepository;
 
@@ -43,9 +48,11 @@ public class TicketService {
 
     public ReadTicketDTO updateTicket(long id, CreateEditUpdateTicketDTO readTicketDTO) {
         Ticket ticket = ticketRepository.findById(id).get();
-        ticket.setEvent(eventRepository.findById((readTicketDTO.getEventId())).get());
-        ticket.setParticipant(participantRepository.findById((readTicketDTO.getParticipantId())).get());
-        return mapper.map(ticketRepository.save(ticket));
+        ticket.setEvent(eventRepository.findById(readTicketDTO.getEventId()).get());
+        ticket.setParticipant(participantRepository.findById(readTicketDTO.getParticipantId()).get());
+        ticket = ticketRepository.save(ticket);
+        entityManager.clear();  // Очистка контекста персистентности
+        return mapper.map(ticketRepository.findById(ticket.getId()).get());
     }
 
     public void deleteTicket(long id) {

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zenden.task_management_system.Classes.DTO.ParticipantDTO;
 import com.zenden.task_management_system.Services.ParticipantService;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping("/participants")
 public class ParticipantController {
@@ -23,27 +25,32 @@ public class ParticipantController {
     private ParticipantService participantService;
 
     @GetMapping
+    @Transactional
     public ResponseEntity<Page<ParticipantDTO>> getParticipants(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
         return ResponseEntity.ok(participantService.getAllParticipants(page, size, sortBy));
     }
 
     @GetMapping("/{id}")
+    @Transactional
     public ResponseEntity<ParticipantDTO> getParticipant(@PathVariable Long id) {
         return ResponseEntity.ok(participantService.getParticipantById(id));
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<ParticipantDTO> createParticipant(@RequestBody ParticipantDTO participant) {
         return ResponseEntity.ok(participantService.createParticipant(participant));
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<ParticipantDTO> updateParticipant(@PathVariable Long id, @RequestBody ParticipantDTO participant) {
         return ResponseEntity.ok(participantService.updateParticipant(id, participant));
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<String> deleteParticipant(@PathVariable Long id) {
         participantService.deleteParticipant(id);
         return ResponseEntity.ok("Deleted");
