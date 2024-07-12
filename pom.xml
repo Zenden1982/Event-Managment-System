@@ -26,9 +26,11 @@
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
-		<java.version>22</java.version>
-	</properties>
+
+    <!-- <properties>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+    </properties> -->
 	<dependencies>
 
 <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
