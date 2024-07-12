@@ -26,17 +26,21 @@
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
-		<java.version>22</java.version>
-	</properties>
+
+		
+		<properties>
+			<maven.compiler.source>17</maven.compiler.source>
+			<maven.compiler.target>17</maven.compiler.target>
+		</properties>
+
 	<dependencies>
 
 <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
-<dependency>
+<!-- <dependency>
     <groupId>org.liquibase</groupId>
     <artifactId>liquibase-core</artifactId>
     <version>4.28.0</version>
-</dependency>
+</dependency> -->
 
 <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 <dependency>
