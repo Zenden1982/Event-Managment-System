@@ -1,15 +1,11 @@
 package com.zenden.task_management_system.Mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.zenden.task_management_system.Classes.Category;
-import com.zenden.task_management_system.Classes.Event;
-import com.zenden.task_management_system.Classes.Location;
-import com.zenden.task_management_system.Classes.Participant;
-import com.zenden.task_management_system.Classes.Ticket;
-import com.zenden.task_management_system.Classes.User;
 import com.zenden.task_management_system.Classes.DTO.CategoryDTO;
 import com.zenden.task_management_system.Classes.DTO.CreateEditUpdateEventDTO;
 import com.zenden.task_management_system.Classes.DTO.CreateEditUpdateTicketDTO;
@@ -18,6 +14,11 @@ import com.zenden.task_management_system.Classes.DTO.ParticipantDTO;
 import com.zenden.task_management_system.Classes.DTO.ReadEventDTO;
 import com.zenden.task_management_system.Classes.DTO.ReadTicketDTO;
 import com.zenden.task_management_system.Classes.DTO.UserDTO;
+import com.zenden.task_management_system.Classes.Event;
+import com.zenden.task_management_system.Classes.Location;
+import com.zenden.task_management_system.Classes.Participant;
+import com.zenden.task_management_system.Classes.Ticket;
+import com.zenden.task_management_system.Classes.User;
 import com.zenden.task_management_system.Repositories.CategoryRepository;
 import com.zenden.task_management_system.Repositories.EventRepository;
 import com.zenden.task_management_system.Repositories.LocationRepository;
@@ -36,6 +37,7 @@ public class Mapper {
     private EventRepository eventRepository;
 
     @Autowired
+    @Lazy
     private PasswordEncoder passwordEncoder;
 
     @Autowired
