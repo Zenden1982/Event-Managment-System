@@ -12,8 +12,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -33,8 +31,6 @@ public class User {
     private String email;
 
     @NotBlank
-    @Min(4)
-    @Max(10)
     private String password;
 
     @ManyToMany

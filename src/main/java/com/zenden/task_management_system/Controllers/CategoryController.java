@@ -16,51 +16,55 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zenden.task_management_system.Classes.DTO.CategoryDTO;
 import com.zenden.task_management_system.Services.CategoryService;
 
-import jakarta.transaction.Transactional;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 
 
 
 
 @RestController
 @RequestMapping("/categories")
+@Tag(name = "Категории", description = "Операции с категориями")
+@Slf4j
 public class CategoryController {
     
     @Autowired
     private CategoryService categoryService;
 
-
-    @Transactional
     @GetMapping("/{id}")
+    @Operation(summary = "Получить категорию по id", description = "Получить категорию по id категории")
     public ResponseEntity<CategoryDTO> getById(@PathVariable long id) {
+        log.info("Получение категории по id: {}", id);
         return ResponseEntity.ok((categoryService.getCategoryById(id)));
     }
 
-    @Transactional
     @GetMapping
+    @Operation(summary = "Получить все категории", description = "Получить все категории")
     public ResponseEntity<Page<CategoryDTO>> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
+        log.info("Получение всех категорий: page={}, size={}, sortedBy={}", page, size, sortBy);
         return ResponseEntity.ok(categoryService.getAllCategories(page, size, sortBy));
     }
 
-    @Transactional
     @PostMapping
+    @Operation(summary = "Создать категорию", description = "Создать категорию")
     public ResponseEntity<CategoryDTO> postMethodName(@RequestBody CategoryDTO entity) {
-        
-        
+        log.info("Создание категории: {}", entity);
         return ResponseEntity.ok(categoryService.createCategory(entity));
     }
 
-    @Transactional
     @PutMapping("/{id}")
+    @Operation(summary = "Обновить категорию", description = "Обновить категорию по id категории")
     public ResponseEntity<CategoryDTO> putMethodName(@PathVariable long id, @RequestBody CategoryDTO entity) {
+        log.info("Обновление категории по id: {}, данные: {}", id, entity);
         return ResponseEntity.ok(categoryService.updateCategory(id, entity));
     }
 
-    @Transactional
     @DeleteMapping("/{id}")
+    @Operation(summary = "Удалить категорию", description = "Удалить категорию по id категории")
     public ResponseEntity<String> deleteMethodName(@PathVariable long id) {
+        log.info("Удаление категории по id: {}", id);
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok("Успешно удалено");
     }
-    
-    
 }

@@ -13,6 +13,9 @@ import com.zenden.task_management_system.Classes.DTO.CategoryDTO;
 import com.zenden.task_management_system.Mapper.Mapper;
 import com.zenden.task_management_system.Repositories.CategoryRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CategoryService {
 
@@ -27,8 +30,8 @@ public class CategoryService {
     }
 
     public CategoryDTO getCategoryById(long id) {
-        Optional<CategoryDTO> categoryDTO = categoryRepository.findById(id).map(mapper::map);
-        return categoryDTO.orElse(null);
+        Optional<CategoryDTO> categoryDTO = Optional.ofNullable(categoryRepository.findById(id).map(mapper::map).orElseThrow( () -> new RuntimeException("Category not found")));
+        return categoryDTO.get();
     }
 
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
@@ -46,6 +49,11 @@ public class CategoryService {
     }
 
     public void deleteCategory(long id) {
-        categoryRepository.deleteById(id);
+        
+       try {
+            categoryRepository.deleteById(id);
+       } catch (Exception e) {
+           throw new RuntimeException("Category not found");
+       }
     }
 }

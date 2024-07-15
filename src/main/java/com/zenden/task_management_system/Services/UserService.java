@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.zenden.task_management_system.Classes.Role;
 import com.zenden.task_management_system.Classes.User;
 import com.zenden.task_management_system.Classes.DTO.UserDTO;
 import com.zenden.task_management_system.Mapper.Mapper;
@@ -33,7 +34,16 @@ public class UserService implements UserDetailsService{
     public UserDTO createUser(UserDTO userDTO) {
         User user = mapper.map(userDTO);
 
-        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
+        Optional<Role> roleOptional = roleRepository.findByName("ROLE_USER");
+        if (roleOptional.isPresent()) {
+            user.setRoles(List.of(roleOptional.get()));
+        }
+        else if (roleOptional.isEmpty()) {
+            Role role = new Role();
+            role.setName("ROLE_USER");
+            roleRepository.saveAndFlush(role);
+            user.setRoles(List.of(roleOptional.get()));
+        }
         return mapper.map(userRepository.save(mapper.map(userDTO)));
     }
 
