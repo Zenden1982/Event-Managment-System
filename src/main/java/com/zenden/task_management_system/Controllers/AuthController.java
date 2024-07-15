@@ -70,8 +70,7 @@ public class AuthController {
     @Transactional
     public ResponseEntity<?> register(@RequestBody UserDTO request) {
         log.info("Новый пользователь зарегистрирован: " + request);
-        userService.createUser(request);
-        return ResponseEntity.ok(request);
+        return ResponseEntity.ok(userService.createUser(request));
     }
 
     @Operation(summary = "Эндпоинт для администраторов")

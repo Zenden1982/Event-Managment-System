@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService{
             Role role = new Role();
             role.setName("ROLE_USER");
             roleRepository.saveAndFlush(role);
-            user.setRoles(List.of(roleOptional.get()));
+            user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
         }
         return mapper.map(userRepository.save(mapper.map(userDTO)));
     }
