@@ -26,10 +26,15 @@ public class UserService implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
-@Autowired
+
+    @Autowired
     RoleRepository roleRepository;
+
     @Autowired
     private Mapper mapper;
+
+    @Autowired
+    private EmailService emailService;
 
     public UserDTO createUser(UserDTO userDTO) {
         User user = mapper.map(userDTO);
@@ -44,6 +49,9 @@ public class UserService implements UserDetailsService{
             roleRepository.saveAndFlush(role);
             user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
         }
+        String subject = "Добро пожаловать в нашу систему управления мероприятиями";
+        String message = "Дорогой " + userDTO.getUsername() + ",\n\nСпасибо за регистрацию!";
+        emailService.sendEmail(userDTO.getEmail(), subject, message);
         return mapper.map(userRepository.save(mapper.map(userDTO)));
     }
 
