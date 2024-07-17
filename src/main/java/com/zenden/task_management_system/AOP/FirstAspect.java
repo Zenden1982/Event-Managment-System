@@ -1,5 +1,7 @@
 package com.zenden.task_management_system.AOP;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -48,5 +50,10 @@ public class FirstAspect {
     @Before("controllerPointCut()")
     public void beforeControllerAdvice() {
         log.info("Before Controller Advice");
+    }
+
+    @After("controllerPointCut()" + "&& args(id)" +"&& target(service)")
+    public void afterControllerAdvice(JoinPoint jp, long id, Object service) {
+        log.info("After Controller Advice with id: {} and service: {}", id, service);
     }
 }
