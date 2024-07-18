@@ -8,19 +8,25 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.zenden.task_management_system.Classes.Location;
 import com.zenden.task_management_system.Classes.DTO.LocationDTO;
 import com.zenden.task_management_system.Classes.Filters.Location.LocationFilter;
 import com.zenden.task_management_system.Classes.Filters.Location.LocationSpecifications;
-import com.zenden.task_management_system.Classes.Location;
 import com.zenden.task_management_system.Mapper.Mapper;
 import com.zenden.task_management_system.Repositories.LocationRepository;
+
+import lombok.SneakyThrows;
 
 @Service
 public class LocationService {
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    ImageService imageService;
+    
     @Autowired
     private Mapper mapper;
 
@@ -48,8 +54,23 @@ public class LocationService {
     }
 
     public Location createLocation(LocationDTO location) {
+        uploadImage(location.getImage());
         return locationRepository.save(mapper.map(location));
     }
+
+    @SneakyThrows
+    public void uploadImage(MultipartFile image){
+        if(!image.isEmpty()){
+            imageService.uploadImage(image.getOriginalFilename(), image.getInputStream());
+        }
+    }
+
+    @SneakyThrows
+    public Optional<byte[]> getImage(Long id) {
+        Optional<Location> location = locationRepository.findById(id);
+        return imageService.getImage(location.get().getImage());
+    }
+
 
     public Location updateLocation(Long id,LocationDTO location) {
         Optional<Location> location2 = locationRepository.findById(id);
@@ -57,6 +78,8 @@ public class LocationService {
             location2.get().setName(location.getName());
             location2.get().setAddress(location.getAddress());
             location2.get().setCapacity(location.getCapacity());
+            uploadImage(location.getImage());
+            location2.get().setImage(location.getImage().getOriginalFilename());
             return locationRepository.save(location2.get());
         }
         else {

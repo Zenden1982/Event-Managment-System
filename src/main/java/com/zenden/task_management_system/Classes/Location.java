@@ -29,4 +29,6 @@ public class Location {
     @OneToMany(mappedBy = "location")
     private List<Event> event;
 
+    private String image;
+
 }

@@ -81,7 +81,7 @@ public class LocationController {
         return ResponseEntity.ok(locationService.getAllLocations(page, size, sortBy));
     }
 
-    @Operation(summary = "Создать новое местоположение")
+    // @Operation(summary = "Создать новое местоположение")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Местоположение успешно создано", 
                      content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDTO.class)))
@@ -93,6 +93,13 @@ public class LocationController {
         locationService.createLocation(entity);
         return ResponseEntity.ok(entity);
     }
+
+
+
+
+    
+
+
 
     @Operation(summary = "Обновить местоположение по ID")
     @ApiResponses(value = {

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Location</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1 th:text="${location.name} + ' Details'">Location Details</h1>
+
+    <div>
+        <p><strong>ID:</strong> <span th:text="${location.id}"></span></p>
+        <p><strong>Name:</strong> <span th:text="${location.name}"></span></p>
+        <p><strong>Address:</strong> <span th:text="${location.address}"></span></p>
+        <p><strong>Capacity:</strong> <span th:text="${location.capacity}"></span></p>
+        <p><strong>Image:</strong> <img th:src="@{/view/{id}/avatar(id=${location.id})}" width="200px" height="auto" th:alt=" image" /></p>
+    </div>
+
+    <a th:href="@{/locations}" class="btn">Back to Locations</a>
+</body>
+</html>
