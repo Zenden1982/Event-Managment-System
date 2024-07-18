@@ -2,6 +2,7 @@ package com.zenden.task_management_system.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zenden.task_management_system.Classes.DTO.LocationDTO;
 import com.zenden.task_management_system.Classes.Filters.Location.LocationFilter;
@@ -88,9 +90,13 @@ public class LocationController {
     })
     @Transactional
     @PostMapping
-    public ResponseEntity<LocationDTO> create(@RequestBody LocationDTO entity) {
+    public ResponseEntity<LocationDTO> create(@RequestBody LocationDTO entity, @RequestParam ("file") MultipartFile file) {
         log.info("Создание нового местоположения: {}", entity);
-        locationService.createLocation(entity);
+        try {
+            locationService.createLocation(entity, file);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
         return ResponseEntity.ok(entity);
     }
 

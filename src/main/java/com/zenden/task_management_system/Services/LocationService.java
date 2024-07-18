@@ -1,5 +1,6 @@
 package com.zenden.task_management_system.Services;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.zenden.task_management_system.Classes.Location;
 import com.zenden.task_management_system.Classes.DTO.LocationDTO;
 import com.zenden.task_management_system.Classes.Filters.Location.LocationFilter;
 import com.zenden.task_management_system.Classes.Filters.Location.LocationSpecifications;
-import com.zenden.task_management_system.Classes.Location;
 import com.zenden.task_management_system.Mapper.Mapper;
 import com.zenden.task_management_system.Repositories.LocationRepository;
 
@@ -47,8 +49,10 @@ public class LocationService {
         return locationRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy))).map(mapper::map);
     }
 
-    public Location createLocation(LocationDTO location) {
-        return locationRepository.save(mapper.map(location));
+    public Location createLocation(LocationDTO location, MultipartFile image) throws IOException {
+        Location mappedLocation = mapper.map(location);
+        mappedLocation.setImage(image.getBytes());
+        return locationRepository.save(mappedLocation);
     }
 
     public Location updateLocation(Long id,LocationDTO location) {
